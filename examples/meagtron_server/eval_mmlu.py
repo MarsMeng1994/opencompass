@@ -5,10 +5,8 @@ from opencompass.runners import LocalRunner
 from opencompass.tasks import OpenICLEvalTask, OpenICLInferTask
 
 with read_base():
-    from opencompass.configs.datasets.ruler.ruler_combined_gen import \
-        ruler_combined_datasets
-    from opencompass.configs.summarizers.groups.ruler import \
-        ruler_summary_groups
+    from opencompass.configs.datasets.mmlu.mmlu_gen_4d595a import mmlu_datasets
+    from opencompass.configs.summarizers.groups.mmlu import mmlu_summary_groups
 
 from opencompass.models.megatron_api import MegatronMoe
 
@@ -21,19 +19,19 @@ models=[
             top_k_sampling=0,
             top_p_sampling=0),
         key='xxxxxxxxxxxx',
-        max_out_len=16384,
+        max_seq_len=20,
         path='/sharedata/sy/model/map_neo_7b/',
         query_per_second=1,
         type=MegatronMoe),
 ]
-work_dir = './outputs/ruler'
+work_dir = './outputs/mmlu'
 
 infer = dict(
     partitioner=dict(type=NumWorkerPartitioner, num_worker=1),
     runner=dict(type=LocalRunner,
                 max_num_workers=1,
                 task=dict(type=OpenICLInferTask),
-                retry=5),
+                retry=1),
 )
 
 eval = dict(
@@ -44,8 +42,9 @@ eval = dict(
 )
 
 summarizer = dict(
-    # dataset_abbrs=['ruler_4k', 'ruler_8k', 'ruler_16k', 'ruler_32k'],
-    dataset_abbrs=['ruler_4k'],
+    dataset_abbrs=[
+        ['mmlu', 'accuracy']
+    ],
     summary_groups=sum(
         [v for k, v in locals().items() if k.endswith('_summary_groups')], []),
 )

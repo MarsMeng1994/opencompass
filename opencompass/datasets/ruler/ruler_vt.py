@@ -10,7 +10,7 @@ from transformers import AutoTokenizer
 from opencompass.datasets.base import BaseDataset
 from opencompass.openicl import BaseEvaluator
 from opencompass.registry import LOAD_DATASET
-
+import transformers
 
 @LOAD_DATASET.register_module()
 class RulerVtDataset(BaseDataset):
@@ -29,11 +29,15 @@ class RulerVtDataset(BaseDataset):
         remove_newline_tab: str = '',
     ) -> Dataset:
 
-        if tokenizer_model == 'gpt-4':
-            tokenizer = tiktoken.encoding_for_model(tokenizer_model)
-        else:
-            tokenizer = AutoTokenizer.from_pretrained(tokenizer_model,
-                                                      trust_remote_code=True)
+        # if tokenizer_model == 'gpt-4':
+        #     tokenizer = tiktoken.encoding_for_model(tokenizer_model)
+        # else:
+        #     tokenizer = AutoTokenizer.from_pretrained(tokenizer_model,
+        #                                               trust_remote_code=True)
+        tokenizer = transformers.AutoTokenizer.from_pretrained(
+            pretrained_model_name_or_path="/workspace/zimoliu/models/Qwen2.5-1.5B-Instruct-tokenizer", 
+            trust_remote_code=True,
+        )
 
         random.seed(random_seed)
         np.random.seed(random_seed)
