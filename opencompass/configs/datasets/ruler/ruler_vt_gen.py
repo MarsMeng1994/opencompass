@@ -8,6 +8,7 @@ vt_datasets = [
     {
         'abbr': 'ruler_vt',
         'type': RulerVtDataset,
+        'tokens_to_generate': 120,
         'num_chains': 1,
         'num_hops': 4,
         'reader_cfg': dict(input_columns=['prompt'], output_column='answer'),

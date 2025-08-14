@@ -110,7 +110,7 @@ class OpenICLInferTask(BaseTask):
         inferencer_cfg = self.infer_cfg['inferencer']
         inferencer_cfg['model'] = self.model
         self._set_default_value(inferencer_cfg, 'max_out_len',
-                                self.max_out_len)
+                                self.dataset_cfg.tokens_to_generate)
         self._set_default_value(inferencer_cfg, 'min_out_len',
                                 self.min_out_len)
         self._set_default_value(inferencer_cfg, 'batch_size', self.batch_size)
